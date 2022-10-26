@@ -1,6 +1,3 @@
-// const addContact = async (body) => {}
-// const updateContact = async (contactId, body) => {}
-
 const fs = require("fs/promises");
 const path = require("path");
 const { nanoid } = require("nanoid");
