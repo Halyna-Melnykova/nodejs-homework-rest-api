@@ -1,7 +1,7 @@
 const express = require("express");
 const Joi = require("joi");
 
-const contacts = require("../../models/contacts");
+const ctrl = require("../../controllers/contacts");
 
 const { RequestError } = require("../../helpers");
 
@@ -15,7 +15,7 @@ const contactAddSchema = Joi.object({
 
 router.get("/", async (req, res, next) => {
   try {
-    const result = await contacts.listContacts();
+    const result = await ctrl.listContacts();
     res.json(result);
   } catch (error) {
     next(error);
@@ -25,7 +25,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:contactId", async (req, res, next) => {
   try {
     const { contactId } = req.params;
-    const result = await contacts.getContactById(contactId);
+    const result = await ctrl.getContactById(contactId);
     if (!result) {
       throw RequestError(404, "Not found");
     }
@@ -41,7 +41,7 @@ router.post("/", async (req, res, next) => {
     if (error) {
       throw RequestError(400, error.message);
     }
-    const result = await contacts.addContact(req.body);
+    const result = await ctrl.addContact(req.body);
     res.status(201).json(result);
   } catch (error) {
     next(error);
@@ -51,7 +51,7 @@ router.post("/", async (req, res, next) => {
 router.delete("/:contactId", async (req, res, next) => {
   try {
     const { contactId } = req.params;
-    const result = await contacts.removeContact(contactId);
+    const result = await ctrl.removeContact(contactId);
     if (!result) {
       throw RequestError(404);
     }
@@ -70,7 +70,7 @@ router.put("/:contactId", async (req, res, next) => {
       throw RequestError(400, error.message);
     }
     const { contactId } = req.params;
-    const result = await contacts.updateContactById(contactId, req.body);
+    const result = await ctrl.updateContactById(contactId, req.body);
     if (!result) {
       throw RequestError(404);
     }
