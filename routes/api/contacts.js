@@ -4,7 +4,11 @@ const ctrl = require("../../controllers/contacts");
 
 const { ctrlWrapper } = require("../../helpers");
 
-const { validateBody, isValidId } = require("../../middlewares");
+const {
+  validateBody,
+  validateStatusBody,
+  isValidId,
+} = require("../../middlewares");
 
 const {
   contactAddSchema,
@@ -29,7 +33,7 @@ router.put(
 router.patch(
   "/:id/favorite",
   isValidId,
-  validateBody(updateStatusSchema),
+  validateStatusBody(updateStatusSchema),
   ctrlWrapper(ctrl.updateStatusContact)
 );
 
