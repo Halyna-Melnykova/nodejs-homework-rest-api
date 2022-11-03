@@ -1,5 +1,4 @@
 const express = require("express");
-const Joi = require("joi");
 
 const ctrl = require("../../controllers/contacts");
 
@@ -7,14 +6,12 @@ const { ctrlWrapper } = require("../../helpers");
 
 const { validateBody, isValidId } = require("../../middlewares");
 
-const router = express.Router();
+const {
+  contactAddSchema,
+  updateStatusSchema,
+} = require("../../models/contact");
 
-const contactAddSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.string().required(),
-  favorite: Joi.boolean(),
-});
+const router = express.Router();
 
 router.get("/", ctrlWrapper(ctrl.listContacts));
 
@@ -29,7 +26,12 @@ router.put(
   ctrlWrapper(ctrl.updateContactById)
 );
 
-// router.patch("/:id/favorite", isValidId, validateBody(schemas.updateFavoriteSchema), ctrlWrapper(ctrl.updateFavorite));
+router.patch(
+  "/:id/favorite",
+  isValidId,
+  validateBody(updateStatusSchema),
+  ctrlWrapper(ctrl.updateStatusContact)
+);
 
 router.delete("/:id", isValidId, ctrlWrapper(ctrl.removeContact));
 
