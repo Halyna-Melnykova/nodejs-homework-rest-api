@@ -5,7 +5,7 @@ const { User } = require("../../models/user");
 const { RequestError } = require("../../helpers");
 
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { subscription, email, password } = req.body;
 
   const user = await User.findOne({ email });
   if (user) {
@@ -14,10 +14,14 @@ const register = async (req, res) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await User.create({ name, email, password: hashPassword });
+  const newUser = await User.create({
+    subscription,
+    email,
+    password: hashPassword,
+  });
 
   res.status(201).json({
-    name: newUser.name,
+    subscription: newUser.subscription,
     email: newUser.email,
   });
 };
