@@ -26,6 +26,8 @@ router.get("/current", authenticate, ctrlWrapper(ctrl.getCurrent));
 
 router.get("/logout", authenticate, ctrlWrapper(ctrl.logout));
 
+router.patch("/subs/:id", authenticate, ctrlWrapper(ctrl.updateSubscription));
+
 router.patch(
   "/avatars",
   authenticate,

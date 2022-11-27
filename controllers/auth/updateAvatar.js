@@ -3,6 +3,18 @@ const path = require("path");
 
 const { User } = require("../../models/user");
 
+// const Jimp = require("jimp");
+
+// // open a file called "lenna.png"
+// Jimp.read("../../temp/cat.jpg", (err, cat) => {
+//   if (err) throw err;
+//   cat
+//     .resize(250, 250) // resize
+//     .quality(75) // set JPEG quality
+//     .greyscale() // set greyscale
+//     .write("../../temp/avatar"); // save
+// });
+
 const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
 
 const updateAvatar = async (req, res) => {

@@ -8,6 +8,18 @@ dotenv.config();
 const usersRouter = require("./routes/api/users");
 const contactsRouter = require("./routes/api/contacts");
 
+const Jimp = require("jimp");
+
+// open a file
+Jimp.read("./temp/cat.jpg", (err, cat) => {
+  if (err) throw err;
+  cat
+    .resize(250, 250) // resize
+    .quality(75) // set JPEG quality
+    .greyscale() // set greyscale
+    .write("./temp/avatar.jpg"); // save
+});
+
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
