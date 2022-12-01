@@ -1,9 +1,12 @@
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
+const { nanoid } = require("nanoid");
 
 const { User } = require("../../models/user");
 
-const { RequestError } = require("../../helpers");
+const { RequestError, sendMail } = require("../../helpers");
+
+const { BASE_URL } = process.env;
 
 const register = async (req, res) => {
   const { subscription, email, password } = req.body;
@@ -17,16 +20,28 @@ const register = async (req, res) => {
 
   const avatarURL = gravatar.url(email);
 
+  const verificationToken = nanoid();
+
   const newUser = await User.create({
     subscription,
     email,
     password: hashPassword,
     avatarURL,
+    verificationToken,
   });
+
+  const mail = {
+    to: email,
+    subject: "Verificate registration",
+    html: `<a target="_blank" href="${BASE_URL}/api/users/verify/${verificationToken}">Press for verification</a>`,
+  };
+
+  await sendMail(mail);
 
   res.status(201).json({
     subscription: newUser.subscription,
     email: newUser.email,
+    verificationToken: newUser.verificationToken,
   });
 };
 
